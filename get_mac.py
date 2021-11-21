@@ -1,12 +1,13 @@
 from napalm import get_network_driver
 from napalm.base.exceptions import ConnectionException
+from getpass import getpass
 import sys
 
 def get_mac(ip_addr):
     
-    username,password = input("\nUsername:\n"),input("Password:\n")
+    username,password = input("\nUsername:\n"),getpass("Password:\n", stream=None)
 
-    print("Attempting to connect to {}".format(ip_addr))
+    print("Attempting to connect to {}\n".format(ip_addr))
 
     try:
     
@@ -16,7 +17,7 @@ def get_mac(ip_addr):
 
     except ConnectionException:
 
-        print("Unable to connect to device {}".format(ip_addr))
+        print("Unable to connect to device {}\n".format(ip_addr))
         sys.exit()
 
     print("Connection to {} successful".format(ip_addr))
