@@ -11,4 +11,4 @@ def return_of_the_mac(mac_address):
         sys.exit()
     
     else:
-        continue
+        pass
