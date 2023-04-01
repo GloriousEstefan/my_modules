@@ -1,17 +1,29 @@
-import sys
+def is_ip_valid(ip_address):
+    if not ip_address:
+        print("No IP address provided")
+        return False
+    
+    octet_list = ip_address.rstrip("\n").split('.')
 
-#Checking octets
-def is_ip_valid():
+    if len(octet_list) != 4:
+        print(f"{ip_address} returned false during octet count check")
+        return False
 
-    ip_addr = input("\nEnter IP address:\n")
-    ip_addr = ip_addr.rstrip("\n")
-    octet_list = ip_addr.split('.')
-        
-    if (len(octet_list) == 4) and (1 <= int(octet_list[0]) <= 223) and (int(octet_list[0]) != 127) and (int(octet_list[0]) != 169 or int(octet_list[1]) != 254) and (0 <= int(octet_list[1]) <= 255 and 0 <= int(octet_list[2]) <= 255 and 0 <= int(octet_list[3]) <= 255):
-        print("\n{} is a valid IP address.".format(ip_addr))
-             
-    else:
-        print("\n{} is not a valid IP address.".format(ip_addr))
-        sys.exit()
+    first_octet = int(octet_list[0])
+    if first_octet == 127 or (first_octet == 169 and int(octet_list[1]) == 254):
+        print(f"{ip_address} returned false during loopback and apipa check")
+        return False
 
-    return ip_addr
+    if not (1 <= first_octet <= 223):
+        print(f"{ip_address} returned false during multicast check")
+        return False
+    
+    for octet in octet_list:
+        try:
+            int(octet)
+
+        except ValueError:
+            print(f"{ip_address} returned false during octet integer check")
+            return False
+
+    return all(0 <= int(octet) <= 255 for octet in octet_list[1:])
